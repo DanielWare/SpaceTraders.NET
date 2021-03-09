@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>SpaceTraders.NET</Title>
+    <Authors>Daniel Ware</Authors>
+    <PackageProjectUrl>https://github.com/DanielWare/SpaceTraders.NET</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/DanielWare/SpaceTraders.NET/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/DanielWare/SpaceTraders.NET</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
