@@ -84,13 +84,24 @@ namespace SpaceTraders.NET
         
         public async Task<GetStatusResponse?> GetStatus()
         {
-            HttpRequestMessage request = new()
+            HttpRequestMessage requestMessage = new()
             {
                 RequestUri = new Uri($"{BaseUrl}/game/status"),
                 Method = HttpMethod.Get
             };
-            HttpResponseMessage responseMessage = await HttpClient.SendAsync(request);
+            HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
             return await DeserializeAsync<GetStatusResponse>(responseMessage);
+        }
+
+        public async Task<CreateUserResponse?> CreateUser(CreateUserRequest request)
+        {
+            HttpRequestMessage requestMessage = new()
+            {
+                RequestUri = new Uri($"{BaseUrl}/users/{request.Username}/token"),
+                Method = HttpMethod.Post
+            };
+            HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
+            return await DeserializeAsync<CreateUserResponse>(responseMessage);
         }
         
         public async Task<GetYourUserResponse?> GetYourUser(BaseAuthenticatedRequest request) => 
