@@ -9,6 +9,7 @@
     <PackageProjectUrl>https://github.com/DanielWare/SpaceTraders.NET</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/DanielWare/SpaceTraders.NET/blob/master/LICENSE.txt</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/DanielWare/SpaceTraders.NET</RepositoryUrl>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>
