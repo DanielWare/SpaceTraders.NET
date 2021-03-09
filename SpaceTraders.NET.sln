@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{68477C26-7431-4AAC-8457-C0D4BFE8EC2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceTraders.NET", "src\SpaceTraders.NET\SpaceTraders.NET.csproj", "{A6DCDAA5-DF90-483F-8288-791683C71FB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{E8AB45C1-AB1D-469C-AF03-A73C9E15D25E}"
+ProjectSection(SolutionItems) = preProject
+	.gitignore = .gitignore
+	README.md = README.md
+	LICENSE.txt = LICENSE.txt
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|x64.Build.0 = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Debug|x86.Build.0 = Debug|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|x64.ActiveCfg = Release|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|x64.Build.0 = Release|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|x86.ActiveCfg = Release|Any CPU
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A6DCDAA5-DF90-483F-8288-791683C71FB6} = {68477C26-7431-4AAC-8457-C0D4BFE8EC2D}
+	EndGlobalSection
+EndGlobal
