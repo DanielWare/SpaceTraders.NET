@@ -7,7 +7,8 @@ namespace SpaceTraders.NET.Models
         public string Class { get; set; }
         public IEnumerable<ShipCargo> Cargo { get; set; }
         public string Id { get; set; }
-        public string Location { get; set; }
+        public string? Location { get; set; }
+        public string? FlightPlanId { get; set; }
         public string Manufacturer { get; set; }
         public int MaxCargo { get; set; }
         public int Plating { get; set; }

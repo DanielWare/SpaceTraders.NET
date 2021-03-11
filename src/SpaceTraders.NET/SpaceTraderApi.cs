@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using SpaceTraders.NET.Request;
@@ -20,7 +21,8 @@ namespace SpaceTraders.NET
         
         private static async Task<TResponse?> AuthenticatedPost<TRequest, TResponse>(string relativeUrl, TRequest request, Func<TRequest, string> serialize) where TRequest : BaseAuthenticatedRequest
         {
-            StringContent content = new(serialize(request));
+            string json = serialize(request);
+            StringContent content = new(json, Encoding.Default, "application/json");
             HttpRequestMessage requestMessage = new()
             {
                 RequestUri = new Uri($"{BaseUrl}/{relativeUrl}"),
@@ -32,7 +34,7 @@ namespace SpaceTraders.NET
                 Content = content
             };
 
-            return await AuthenticatedSend<TRequest, TResponse>(requestMessage);
+            return await SendAsync<TResponse>(requestMessage);
         }
 
         private static async Task<TResponse?> AuthenticatedGet<TRequest, TResponse>(string relativeUrl, TRequest request) where TRequest : BaseAuthenticatedRequest
@@ -47,7 +49,7 @@ namespace SpaceTraders.NET
                 }
             };
 
-            return await AuthenticatedSend<TRequest, TResponse>(requestMessage);
+            return await SendAsync<TResponse>(requestMessage);
         }
 
         private static async Task<TResponse?> AuthenticatedPut<TRequest, TResponse>(string relativeUrl, TRequest request) where TRequest : BaseAuthenticatedRequest
@@ -62,10 +64,10 @@ namespace SpaceTraders.NET
                 }
             };
 
-            return await AuthenticatedSend<TRequest, TResponse>(requestMessage);
+            return await SendAsync<TResponse>(requestMessage);
         }
 
-        private static async Task<TResponse?> AuthenticatedSend<TRequest, TResponse>(HttpRequestMessage requestMessage)
+        private static async Task<TResponse?> SendAsync<TResponse>(HttpRequestMessage requestMessage)
         {
             HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
             return await DeserializeAsync<TResponse>(responseMessage);
@@ -89,8 +91,7 @@ namespace SpaceTraders.NET
                 RequestUri = new Uri($"{BaseUrl}/game/status"),
                 Method = HttpMethod.Get
             };
-            HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
-            return await DeserializeAsync<GetStatusResponse>(responseMessage);
+            return await SendAsync<GetStatusResponse>(requestMessage);
         }
 
         public async Task<CreateUserResponse?> CreateUser(CreateUserRequest request)
@@ -100,8 +101,7 @@ namespace SpaceTraders.NET
                 RequestUri = new Uri($"{BaseUrl}/users/{request.Username}/token"),
                 Method = HttpMethod.Post
             };
-            HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
-            return await DeserializeAsync<CreateUserResponse>(responseMessage);
+            return await SendAsync<CreateUserResponse>(requestMessage);
         }
         
         public async Task<GetYourUserResponse?> GetYourUser(BaseAuthenticatedRequest request) => 
@@ -112,7 +112,7 @@ namespace SpaceTraders.NET
 
         public async Task<TakeLoanResponse?> TakeLoan(TakeLoanRequest request) =>
             await AuthenticatedPost<TakeLoanRequest, TakeLoanResponse>($"users/{request.UserName}/loans", 
-                request, (req) => Serialize(new { req.Type }));
+                request, (req) => Serialize(new { type = req.Type }));
 
         public async Task<PayLoanResponse?> PayLoan(PayLoanRequest request) =>
             await AuthenticatedPut<PayLoanRequest, PayLoanResponse>($"users/{request.UserName}/loans/{request.LoanId}",
@@ -121,9 +121,13 @@ namespace SpaceTraders.NET
         public async Task<YourShipsResponse?> GetYourShips(BaseAuthenticatedRequest request) => 
             await AuthenticatedGet<BaseAuthenticatedRequest, YourShipsResponse>($"users/{request.UserName}/ships", request);
 
+        public async Task<YourShipResponse?> GetYourShip(YourShipRequest request) =>
+            await AuthenticatedGet<YourShipRequest, YourShipResponse>(
+                $"users/{request.UserName}/ships/{request.ShipId}", request);
+        
         public async Task<PurchaseShipResponse?> PurchaseShip(PurchaseShipRequest request) =>
             await AuthenticatedPost<PurchaseShipRequest, PurchaseShipResponse>($"users/{request.UserName}/ships",
-                request, (req) => Serialize(new { req.Type, req.Location }));
+                request, (req) => Serialize(new { type = req.Type, location = req.Location }));
 
         public async Task<YourFlightPlanResponse?> GetFlightPlan(YourFlightPlanRequest request) =>
             await AuthenticatedGet<YourFlightPlanRequest, YourFlightPlanResponse>(
@@ -131,7 +135,7 @@ namespace SpaceTraders.NET
 
         public async Task<CreateFlightPlanResponse?> CreateFlightPlan(CreateFlightPlanRequest request) =>
             await AuthenticatedPost<CreateFlightPlanRequest, CreateFlightPlanResponse>($"users/{request.UserName}/flight-plans", 
-                request, req => Serialize(new { req.ShipId, req.Location }));
+                request, req => Serialize(new { shipId = req.ShipId, destination = req.Destination }));
 
         public async Task<ShipsResponse?> AvailableShips(BaseAuthenticatedRequest request) =>
             await AuthenticatedGet<BaseAuthenticatedRequest, ShipsResponse>($"game/ships", request);
@@ -153,5 +157,15 @@ namespace SpaceTraders.NET
         public async Task<MarketplaceResponse?> Marketplace(MarketplaceRequest request) =>
             await AuthenticatedGet<MarketplaceRequest, MarketplaceResponse>(
                 $"game/locations/{request.LocationSymbol}/marketplace", request);
+
+        public async Task<BaseTradeOrderResponse?> SellOrder(BaseTradeOrderRequest request) =>
+            await AuthenticatedPost<BaseTradeOrderRequest, BaseTradeOrderResponse>(
+                $"users/{request.UserName}/sell-orders", 
+                request, req => Serialize(new {shipId = req.ShipId, good = req.Good, quantity = req.Quantity}));
+
+        public async Task<BaseTradeOrderResponse?> PurchaseOrder(BaseTradeOrderRequest request) =>
+            await AuthenticatedPost<BaseTradeOrderRequest, BaseTradeOrderResponse>(
+                $"users/{request.UserName}/purchase-orders",
+                request, req => Serialize(new {shipId = req.ShipId, good = req.Good, quantity = req.Quantity}));
     }
 }
